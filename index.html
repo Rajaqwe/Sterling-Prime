@@ -555,7 +555,7 @@ $('#brails').innerHTML=P.length>200?BR.map(b=>{const n=P.filter(p=>b[2].includes
 mark();mq()}
 function mark(){document.querySelectorAll('#chips .chip').forEach(c=>c.classList.toggle('on',c.dataset.c===cat));document.querySelectorAll('#brails .chip').forEach(c=>c.classList.toggle('on',c.dataset.b===br))}
 function flt(){const bn=br&&BR.find(b=>b[0]==br)[2],cn=cat===''?'':CATS[cat],q=qs;return P.filter(p=>(!cn||p.c===cn)&&(!bn||bn.includes(p.b))&&(!q||(p.n+' '+p.sku+' '+p.b).toLowerCase().includes(q)))}
-const card=(p,i)=>`<button class="card${p.ih?' ih':''}" data-i="${i}"><img loading="lazy" decoding="async" src="${p.u}" alt="${esc(p.n)}"><div class="m"><b>${esc(p.n)}</b><small>${esc(p.b)}${p.pr?' · '+esc(p.pr):''}</small></div></button>`;
+const card=(p,i)=>`<button class="card${p.ih?' ih':''}" data-i="${i}"><img loading="lazy" decoding="async" src="${p.u}" alt="${esc(p.n)}"><div class="m"><b>${esc(p.n)}</b><small>${p.b&&String(p.b).toLowerCase()!=='null'?esc(p.b):''}${p.pr&&String(p.pr).toLowerCase()!=='null'?' · '+esc(p.pr):''}</small></div></button>`;
 function draw(reset=true){if(reset){Lc=flt();shown=INITIAL_PRODUCTS;drawn=0;grid.innerHTML='';$('#cnt').textContent=(br||cat!==''||qs)?fmt(Lc.length)+' products':'5000+ products';if(!Lc.length)grid.innerHTML='<p class="sub">No products match.</p>'}
 grid.insertAdjacentHTML('beforeend',Lc.slice(drawn,shown).map((p,k)=>card(p,drawn+k)).join(''));drawn=Math.min(shown,Lc.length);$('#more').style.display=drawn<Lc.length?'block':'none'}
 function pick(e){const b=e.target.closest('.chip');if(!b)return;if('b' in b.dataset){br=br==b.dataset.b?'':b.dataset.b}else cat=b.dataset.c;mark();draw()}
