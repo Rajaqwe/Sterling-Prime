@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import SterlingPrimeHome from "@/components/home/SterlingPrimeHome";
 
 export default function Home() {
-  redirect("/sterling-prime-mobile-optimised.html");
+  return <SterlingPrimeHome />;
 }
