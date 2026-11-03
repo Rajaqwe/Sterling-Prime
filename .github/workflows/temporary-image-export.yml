@@ -12,10 +12,45 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: visual-audit-export
-      - name: Zip product images
-        run: zip -qr sterling-prime-raw-images.zip "raw images"
+      - name: Split product images into four downloadable archives
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_STORED
+          import os
+          root = Path("raw images")
+          files = [p for p in root.rglob("*") if p.is_file()]
+          files.sort(key=lambda p: p.stat().st_size, reverse=True)
+          groups = [[] for _ in range(4)]
+          sizes = [0] * 4
+          for p in files:
+              i = min(range(4), key=lambda j: sizes[j])
+              groups[i].append(p)
+              sizes[i] += p.stat().st_size
+          for i, group in enumerate(groups, 1):
+              name = f"sterling-prime-images-part-{i}.zip"
+              with ZipFile(name, "w", ZIP_STORED, allowZip64=True) as z:
+                  for p in group:
+                      z.write(p, p.relative_to(root).as_posix())
+              print(f"{name}: {len(group)} files, {sizes[i-1]} bytes")
+          PY
       - uses: actions/upload-artifact@v4
         with:
-          name: sterling-prime-raw-images
-          path: sterling-prime-raw-images.zip
+          name: sterling-prime-images-part-1
+          path: sterling-prime-images-part-1.zip
+          retention-days: 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sterling-prime-images-part-2
+          path: sterling-prime-images-part-2.zip
+          retention-days: 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sterling-prime-images-part-3
+          path: sterling-prime-images-part-3.zip
+          retention-days: 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sterling-prime-images-part-4
+          path: sterling-prime-images-part-4.zip
           retention-days: 2
