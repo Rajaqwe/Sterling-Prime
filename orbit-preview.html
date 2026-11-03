@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sterling Prime — Spin the Collection Preview</title>
+<meta name="description" content="Preview of the Sterling Prime slow 3D orbit product showcase.">
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#172b49;--muted:#536176;--orange:#df741f;--cream:#faf6f1;--line:#eadfd4}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+.preview-note{position:relative;z-index:5;text-align:center;padding:9px 14px;background:#172b49;color:#fff;font-size:12px;letter-spacing:.08em}
+.wrap{min-height:calc(100vh - 34px);position:relative;overflow:hidden;padding:38px 5vw 34px;display:flex;flex-direction:column;align-items:center;background:radial-gradient(ellipse at 50% 52%,#fff 0%,#fbf7f2 52%,#f5eae0 100%)}
+.wrap:before,.wrap:after{content:"";position:absolute;width:58vw;height:18vw;border:1px solid #edc6a7;border-radius:50%;transform:rotate(-18deg);pointer-events:none}
+.wrap:before{top:-12vw;left:-18vw;box-shadow:0 0 0 14px #fff5,0 0 0 15px #edc6a7}.wrap:after{right:-28vw;bottom:-12vw;box-shadow:0 0 0 14px #fff5,0 0 0 15px #edc6a7}
+.eyebrow{font-size:12px;letter-spacing:.36em;font-weight:700;text-transform:uppercase;color:#5d6470;margin:10px 0 12px;text-align:center}
+h1{font:italic 700 clamp(42px,6vw,76px)/.98 'Playfair Display',serif;letter-spacing:-.045em;text-align:center;margin:0;color:var(--ink)}
+h1:after{content:"";display:block;width:92px;height:5px;border-radius:100%;background:var(--orange);margin:13px auto 0;transform:rotate(-4deg)}
+.lead{font-size:clamp(14px,1.4vw,18px);color:#3d4859;text-align:center;margin:18px auto 0;max-width:760px}
+.stage{width:min(1200px,100%);height:clamp(370px,43vw,510px);position:relative;margin:8px auto 0;perspective:1200px;touch-action:pan-y;user-select:none}
+.orbit-glow{position:absolute;width:92%;height:36%;left:4%;bottom:10%;border:2px solid #f3bd7d;border-radius:50%;transform:rotateX(66deg);box-shadow:0 0 18px #f4b96c,0 0 48px #f7d5ae,inset 0 0 24px #f4bd7d66}
+.orbit-glow:after{content:"";position:absolute;inset:12px;border:1px solid #f5d9bc;border-radius:50%}
+.product{--angle:0deg;--depth:0;position:absolute;left:50%;top:45%;width:clamp(112px,13vw,164px);height:clamp(152px,18vw,220px);transform:translate(-50%,-50%) rotateY(var(--angle)) translateZ(var(--depth));transform-style:preserve-3d;transition:filter .6s,opacity .6s;cursor:pointer}
+.product-card{height:100%;border:1px solid #ffffffd9;border-radius:22px;background:linear-gradient(145deg,#ffffffd9,#f7eee7cc);box-shadow:0 18px 35px #23334b20;backdrop-filter:blur(8px);padding:10px;display:flex;align-items:center;justify-content:center;transition:transform .7s cubic-bezier(.2,.8,.2,1),box-shadow .7s;overflow:hidden}
+.product img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 12px 10px #1d2b3a20);pointer-events:none}
+.product.active .product-card{transform:translateY(-14px) scale(1.16);box-shadow:0 28px 55px #26344a30,0 0 0 1px #e9b77e}
+.product:not(.active){opacity:.82;filter:saturate(.85)}
+.product.active{z-index:4}
+.info{position:relative;z-index:6;text-align:center;margin-top:-6px;min-width:min(420px,90vw);padding:18px 32px 16px;border:1px solid #fff;border-radius:28px;background:#ffffffb8;box-shadow:0 18px 42px #27344a12;backdrop-filter:blur(14px)}
+.info h2{font-size:clamp(21px,2.2vw,28px);margin:0 0 4px;font-weight:700}
+.info p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.cta{display:inline-flex;align-items:center;gap:9px;padding:13px 28px;border-radius:40px;background:linear-gradient(110deg,#ed8b32,#c95e0c);color:white;text-decoration:none;font-weight:700;box-shadow:0 9px 20px #c96d2738;transition:transform .25s}
+.cta:hover{transform:translateY(-2px)}
+.arrows{position:absolute;z-index:8;top:48%;left:0;right:0;display:flex;justify-content:space-between;pointer-events:none}
+.arrow{pointer-events:auto;width:48px;height:48px;border-radius:50%;border:1px solid #fff;background:#ffffffc9;color:var(--ink);font-size:25px;cursor:pointer;box-shadow:0 8px 20px #26344a12}
+.dots{display:flex;justify-content:center;gap:10px;margin:15px 0 0}.dot{width:9px;height:9px;border:0;border-radius:50%;background:#d8d2cd;padding:0;cursor:pointer}.dot.on{background:var(--orange);transform:scale(1.2)}
+.features{display:flex;justify-content:center;gap:0;flex-wrap:wrap;margin:30px auto 0;color:#364254;font-size:14px}
+.features span{padding:0 28px;border-right:1px solid #cfc4ba}.features span:last-child{border:0}
+.hint{font-size:11px;color:#78808a;margin-top:10px;letter-spacing:.05em}
+@keyframes orbit{from{transform:translate(-50%,-50%) rotateY(var(--angle)) translateZ(var(--depth))}to{transform:translate(-50%,-50%) rotateY(calc(var(--angle) + 360deg)) translateZ(var(--depth))}}
+@media(max-width:700px){.wrap{padding:26px 14px 28px;min-height:calc(100svh - 34px)}.eyebrow{font-size:10px;letter-spacing:.25em}h1{font-size:clamp(38px,11vw,54px)}.lead{font-size:13px;max-width:330px;margin-top:14px}.stage{height:370px;margin-top:10px}.product{width:104px;height:142px;top:43%}.product.active .product-card{transform:translateY(-8px) scale(1.08)}.orbit-glow{width:112%;left:-6%;bottom:14%;height:31%}.arrows{top:45%}.arrow{width:38px;height:38px;font-size:20px}.info{margin-top:-4px;padding:14px 18px;min-width:0;width:min(340px,94vw)}.info h2{font-size:21px}.features{gap:10px 0;margin-top:24px;font-size:11px}.features span{padding:0 10px}.hint{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="preview-note">PRIVATE DESIGN PREVIEW · NOT LIVE ON THE STERLING PRIME WEBSITE</div>
+<main class="wrap">
+<div class="eyebrow">Explore our range</div>
+<h1>Spin the Collection</h1>
+<p class="lead">A curated showcase of corporate gifting ideas. Spin, explore and get inspired.</p>
+<div class="stage" id="stage" aria-label="Interactive 3D product orbit">
+ <div class="orbit-glow"></div><div id="orbit"></div>
+ <div class="arrows"><button class="arrow" id="prev" aria-label="Previous product">‹</button><button class="arrow" id="next" aria-label="Next product">›</button></div>
+</div>
+<div class="info" aria-live="polite"><h2 id="name">Thermal Bottle</h2><p id="desc">Everyday hydration · Premium finish</p><a class="cta" id="enquire" href="https://wa.me/918758294908?text=Hi%20Sterling%20Prime%2C%20I%20am%20interested%20in%20the%20Thermal%20Bottle">◉ &nbsp; Enquire Now</a></div>
+<div class="dots" id="dots"></div><div class="hint">DRAG OR SWIPE TO EXPLORE · TAP A PRODUCT TO SELECT</div>
+<div class="features"><span>◇ &nbsp; Premium Range</span><span>✧ &nbsp; Custom Branding</span><span>▣ &nbsp; Bulk Orders</span><span>⇢ &nbsp; Pan-India Delivery</span></div>
+</main>
+<script>
+const items=[
+{name:'Thermal Bottle',desc:'Everyday hydration · Premium finish',img:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=85'},
+{name:'Executive Notebook',desc:'Thoughtful stationery · Custom branding',img:'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&auto=format&fit=crop&q=85'},
+{name:'Wireless Headphones',desc:'Smart technology · Everyday utility',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=85'},
+{name:'Travel Backpack',desc:'Work and travel · Practical gifting',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=85'},
+{name:'Desk Essentials',desc:'A refined upgrade for every workspace',img:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&auto=format&fit=crop&q=85'},
+{name:'Wireless Earbuds',desc:'Compact technology · Premium everyday gift',img:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=600&auto=format&fit=crop&q=85'},
+{name:'Power Bank',desc:'Power on the move · Useful corporate gifting',img:'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&auto=format&fit=crop&q=85'}
+];
+const orbit=document.querySelector('#orbit'),dots=document.querySelector('#dots'),nameEl=document.querySelector('#name'),descEl=document.querySelector('#desc'),cta=document.querySelector('#enquire');
+let phase=0,dragging=false,startX=0,lastX=0,paused=false,last=performance.now(),shown=-1;
+const cards=items.map((p,i)=>{const el=document.createElement('button');el.className='product';el.type='button';el.setAttribute('aria-label','Select '+p.name);el.innerHTML='<span class="product-card"><img alt="" loading="lazy" src="'+p.img+'"></span>';el.addEventListener('click',()=>{if(!dragging)phase=i;layout()});orbit.appendChild(el);const dot=document.createElement('button');dot.className='dot';dot.setAttribute('aria-label','Show '+p.name);dot.addEventListener('click',()=>{phase=i;layout()});dots.appendChild(dot);return el});
+function layout(){const mobile=innerWidth<700,radius=mobile?Math.min(180,innerWidth*.43):Math.min(440,innerWidth*.38);const selected=((Math.round(phase)%items.length)+items.length)%items.length;if(selected!==shown){shown=selected;nameEl.textContent=items[selected].name;descEl.textContent=items[selected].desc;cta.href='https://wa.me/918758294908?text='+encodeURIComponent('Hi Sterling Prime, I am interested in the '+items[selected].name+'. Please share details.')}
+cards.forEach((el,i)=>{let rel=i-phase;while(rel>items.length/2)rel-=items.length;while(rel< -items.length/2)rel+=items.length;const a=rel/items.length*Math.PI*2;const x=Math.sin(a)*radius,y=Math.cos(a)*radius*.13,front=Math.max(0,Math.cos(a)),scale=.72+front*.34,z=front*130;el.style.left='calc(50% + '+x+'px)';el.style.top='calc(43% + '+y+'px)';el.style.transform='translate(-50%,-50%) scale('+scale+')';el.style.zIndex=String(Math.round(100+z));el.style.opacity=String(.42+front*.58);el.classList.toggle('active',Math.abs(rel)<.5);dots.children[i].classList.toggle('on',i===selected)})}
+function step(d){phase+=d;layout()}
+document.querySelector('#prev').onclick=()=>step(-1);document.querySelector('#next').onclick=()=>step(1);
+const stage=document.querySelector('#stage');
+stage.addEventListener('pointerdown',e=>{dragging=true;startX=lastX=e.clientX;paused=true;stage.setPointerCapture(e.pointerId)});
+stage.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-lastX;lastX=e.clientX;phase-=dx/145;layout()});
+function end(){dragging=false;paused=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
+function animate(now){const dt=Math.min(40,now-last);last=now;if(!dragging&&!paused&&!matchMedia('(prefers-reduced-motion: reduce)').matches){phase+=dt/5200;layout()}requestAnimationFrame(animate)}requestAnimationFrame(animate);
+window.addEventListener('resize',layout);layout();</script>
+</body></html>
