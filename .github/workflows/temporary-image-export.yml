@@ -1,0 +1,21 @@
+name: Temporary Sterling Prime image export
+on:
+  push:
+    branches:
+      - visual-audit-export
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: visual-audit-export
+      - name: Zip product images
+        run: zip -qr sterling-prime-raw-images.zip "raw images"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sterling-prime-raw-images
+          path: sterling-prime-raw-images.zip
+          retention-days: 2
