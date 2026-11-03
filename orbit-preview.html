@@ -60,24 +60,23 @@ h1:after{content:"";display:block;width:92px;height:5px;border-radius:100%;backg
 const items=[
 {name:'Thermal Bottle',desc:'Everyday hydration · Premium finish',img:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=85'},
 {name:'Executive Notebook',desc:'Thoughtful stationery · Custom branding',img:'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&auto=format&fit=crop&q=85'},
-{name:'Wireless Headphones',desc:'Smart technology · Everyday utility',img:'https://images.unsplash.com/photo-150,?w=600'},
+{name:'Wireless Headphones',desc:'Smart technology · Everyday utility',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=85'},
 {name:'Travel Backpack',desc:'Work and travel · Practical gifting',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=85'},
 {name:'Desk Essentials',desc:'A refined upgrade for every workspace',img:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&auto=format&fit=crop&q=85'},
 {name:'Wireless Earbuds',desc:'Compact technology · Premium everyday gift',img:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=600&auto=format&fit=crop&q=85'},
 {name:'Power Bank',desc:'Power on the move · Useful corporate gifting',img:'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&auto=format&fit=crop&q=85'}
 ];
 const orbit=document.querySelector('#orbit'),dots=document.querySelector('#dots'),nameEl=document.querySelector('#name'),descEl=document.querySelector('#desc'),cta=document.querySelector('#enquire');
-let active=0,angle=0,dragging=false,startX=0,lastX=0,velocity=0,paused=false,lastTouch=0;
-const cards=items.map((p,i)=>{const el=document.createElement('button');el.className='product';el.type='button';el.setAttribute('aria-label','Select '+p.name);el.innerHTML='<span class="product-card"><img alt="" loading="lazy" src="'+p.img+'"></span>';el.addEventListener('click',()=>{if(Math.abs(velocity)<2)select(i)});orbit.appendChild(el);const dot=document.createElement('button');dot.className='dot';dot.setAttribute('aria-label','Show '+p.name);dot.addEventListener('click',()=>select(i));dots.appendChild(dot);return el});
-function layout(){const mobile=innerWidth<700;const radius=mobile?Math.min(180,innerWidth*.43):Math.min(440,innerWidth*.38);cards.forEach((el,i)=>{const rel=((i-active+items.length)%items.length);const a=(rel/items.length)*Math.PI*2;const x=Math.sin(a)*radius;const y=Math.cos(a)*radius*.13;const scale=.68+Math.max(0,Math.cos(a))*.34;const z=Math.cos(a)*120;el.style.left='calc(50% + '+x+'px)';el.style.top='calc(43% + '+y+'px)';el.style.transform='translate(-50%,-50%) scale('+scale+')';el.style.zIndex=String(Math.round(100+z));el.style.opacity=String(.48+Math.max(0,Math.cos(a))*.52);el.classList.toggle('active',i===active);dots.children[i].classList.toggle('on',i===active)});nameEl.textContent=items[active].name;descEl.textContent=items[active].desc;cta.href='https://wa.me/918758294908?text='+encodeURIComponent('Hi Sterling Prime, I am interested in the '+items[active].name+'. Please share details.')}
-function select(i){active=(i+items.length)%items.length;velocity=0;layout()}
-function step(d){select(active+d)}
+let phase=0,dragging=false,startX=0,lastX=0,paused=false,last=performance.now(),shown=-1;
+const cards=items.map((p,i)=>{const el=document.createElement('button');el.className='product';el.type='button';el.setAttribute('aria-label','Select '+p.name);el.innerHTML='<span class="product-card"><img alt="" loading="lazy" src="'+p.img+'"></span>';el.addEventListener('click',()=>{if(!dragging)phase=i;layout()});orbit.appendChild(el);const dot=document.createElement('button');dot.className='dot';dot.setAttribute('aria-label','Show '+p.name);dot.addEventListener('click',()=>{phase=i;layout()});dots.appendChild(dot);return el});
+function layout(){const mobile=innerWidth<700,radius=mobile?Math.min(180,innerWidth*.43):Math.min(440,innerWidth*.38);const selected=((Math.round(phase)%items.length)+items.length)%items.length;if(selected!==shown){shown=selected;nameEl.textContent=items[selected].name;descEl.textContent=items[selected].desc;cta.href='https://wa.me/918758294908?text='+encodeURIComponent('Hi Sterling Prime, I am interested in the '+items[selected].name+'. Please share details.')}
+cards.forEach((el,i)=>{let rel=i-phase;while(rel>items.length/2)rel-=items.length;while(rel< -items.length/2)rel+=items.length;const a=rel/items.length*Math.PI*2;const x=Math.sin(a)*radius,y=Math.cos(a)*radius*.13,front=Math.max(0,Math.cos(a)),scale=.72+front*.34,z=front*130;el.style.left='calc(50% + '+x+'px)';el.style.top='calc(43% + '+y+'px)';el.style.transform='translate(-50%,-50%) scale('+scale+')';el.style.zIndex=String(Math.round(100+z));el.style.opacity=String(.42+front*.58);el.classList.toggle('active',Math.abs(rel)<.5);dots.children[i].classList.toggle('on',i===selected)})}
+function step(d){phase+=d;layout()}
 document.querySelector('#prev').onclick=()=>step(-1);document.querySelector('#next').onclick=()=>step(1);
 const stage=document.querySelector('#stage');
-stage.addEventListener('pointerdown',e=>{dragging=true;startX=lastX=e.clientX;velocity=0;stage.setPointerCapture(e.pointerId);paused=true});
-stage.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-lastX;lastX=e.clientX;velocity=dx;angle+=dx; if(Math.abs(e.clientX-startX)>24){const shift=Math.round((startX-e.clientX)/90);active=(active-shift+items.length)%items.length;startX=e.clientX;layout()}});
-function end(){dragging=false;paused=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);stage.addEventListener('pointerleave',()=>{if(dragging)end()});
-let last=performance.now();function animate(now){const dt=Math.min(40,now-last);last=now;if(!dragging&&!paused&&!matchMedia('(prefers-reduced-motion: reduce)').matches){angle+=dt*.003; if(now-lastTouch>2500&&Math.abs(angle)>45){const dir=angle>0?1:-1;step(dir);angle=0}}requestAnimationFrame(animate)}requestAnimationFrame(animate);
-window.addEventListener('resize',layout);layout();
-</script>
+stage.addEventListener('pointerdown',e=>{dragging=true;startX=lastX=e.clientX;paused=true;stage.setPointerCapture(e.pointerId)});
+stage.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-lastX;lastX=e.clientX;phase-=dx/145;layout()});
+function end(){dragging=false;paused=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
+function animate(now){const dt=Math.min(40,now-last);last=now;if(!dragging&&!paused&&!matchMedia('(prefers-reduced-motion: reduce)').matches){phase+=dt/5200;layout()}requestAnimationFrame(animate)}requestAnimationFrame(animate);
+window.addEventListener('resize',layout);layout();</script>
 </body></html>
