@@ -625,6 +625,7 @@ slq('#slCopy').onclick=async()=>{const m=slMsg(),b=slq('#slCopy');try{await navi
 slq('#slPop').onclick=()=>{if(typeof curP!=='undefined')slToggle(slq('#slPop'),curP)};
 slPaint();if(SL.length)slq('#slTray').classList.add('show');
 </script>
+<script src="catalog_category_overrides.js"></script>
 <script>
 const RAW=`BLUE DESK ORGAIZER.jpeg|Blue Desk Organizer|D
 BOTTLE PEN HOLDER.JPEG|Premium Bottle Pen Holder|D
@@ -647,15 +648,15 @@ MOBILE STAND (2).JPEG|Phone Display Stand|D
 PAPER WEIGHT.JPEG|Artisan Glass Paperweight|D
 PHOTO FRAME.jpeg|Executive Commemorative Frame|D
 PHOTO FRAME (2).jpeg|Custom Corporate Certificate|D
-STAND & STAPLERS.jpeg|Mini Staplers Set|P
+STAND & STAPLERS.jpeg|Mini Staplers Set|O
 BALL PENS.jpeg|Ultimate Color-Pen Set|P
 LEATHER PEN SET.jpeg|Vibrant Leather Pen Suite|P
 PEN.jpeg|Teal Series Executive Pen|P
-PEN (2).jpeg|Executive Medical Gift Set|P
+PEN (2).jpeg|Executive Medical Gift Set|K
 PENS.jpeg|Quad-Color Executive Pen Set|P
 PENS (2).jpeg|Executive Ten-Pen Suite|P
 PREMIUM PEN.jpeg|Premium Pen Set with Case|P
-PROMOTIONAL PENS.jpeg|Premium Medical Promotional Packet|P
+PROMOTIONAL PENS.jpeg|Premium Medical Promotional Packet|H
 PEN HOLDER.jpeg|Anatomical Precision Kidney Model|H
 PEN HOLDER (2).jpeg|Premium Ornate Metal Quill Pen|P
 PEN HOLDER (3).jpeg|Blue Elephant Plush Pen Holder|F
@@ -747,7 +748,7 @@ DISPLAY MODEL.jpeg|Pill-Size Comparison Display|S
 DISPLAY STAND.JPEG|Premium Digital Display Stand|S
 LETTER DISPLAY.JPEG|Large Pink Letter G Display|S
 PROMOTIONAL DISPLAY.jpeg|Premium Promotional Display Object|S
-PROMOTIONAL MODEL.jpeg|Premium Transparent Bottle|S
+PROMOTIONAL MODEL.jpeg|Premium Transparent Bottle|W
 SHOWCASE MODEL.jpeg|Medical Products Platform Display|S
 SPINNER STAND.jpeg|Fidget Spinner on Stand|F
 ANATOMICAL CLOCK.JPEG|Human Body Anatomical Clock|H
@@ -784,8 +785,8 @@ WELLNESS DISPLAY STAND.JPEG|Elite Wellness Display Stand|S
 WELLNESS JOURNEY KIT.JPEG|Wellness Journey Kit|K
 WOMENS DAY FLOWER.JPEG|Women’s Day Rose Keepsake|F
 ACRYLIC QR KEYCHAINS.JPEG|Premium QR Keychains|F
-CUSTOMISED BRAND SCISSOR.PNG|Premium Office Scissors Orange|P
-CUSTOMISED BRAND SCISSOR (2).PNG|Premium Office Scissors Red|P
+CUSTOMISED BRAND SCISSOR.PNG|Premium Office Scissors Orange|O
+CUSTOMISED BRAND SCISSOR (2).PNG|Premium Office Scissors Red|O
 FABRIC KEYCHAINS.jpeg|Premium Fabric Keychains|F
 PENDRIVE.jpeg|Premium USB Drive in Tin|T
 SANDWITCH KEYCHAINS.jpeg|Premium Custom Keychains|F
@@ -797,8 +798,8 @@ PRODUCT BOX.JPEG|Premium Medical Product Box|H
 TISSUE BOX.jpeg|Premium Orange Tissue Box|D
 TISSUE BOX & ORGANIZER.jpeg|Premium Tissue Box with Organizer|D
 TISSUE DISPENSER.jpeg|Premium Tissue Dispenser|D`;
-const CN={D:'Desk & Wood',P:'Pens & Writing',K:'Kits & Gift Sets',B:'Bags & Pouches',C:'Clocks',S:'Display & Acrylic',H:'Healthcare',F:'Plush & Keychains',T:'Tech & Light'};
-const FULL={D:'Desk Organizers & Stands',P:'Pens & Luxury Writing',K:'Executive Combo Gift Sets',B:'Backpacks, Luggage & Travel Bags',C:'Clocks, Watches & Timepieces',S:'Desk Organizers & Stands',H:'Healthcare & Medical Communication',F:'Plush, Keychains & Fun Gifts',T:'Smart Tech & Computer Accessories'},cf=(c,i)=>i>=48&&i<=50?'Diaries, Notebooks & Planners':i>=80&&i<=88?'Wallets, Cardholders & Pouches':FULL[c];
+const CN={D:'Desk & Wood',P:'Pens & Writing',K:'Kits & Gift Sets',B:'Bags & Pouches',C:'Clocks',S:'Display & Acrylic',H:'Healthcare',F:'Plush & Keychains',T:'Tech & Light',O:'Office Stationery',W:'Bottles & Flasks'};
+const FULL={D:'Desk Organizers & Stands',P:'Pens & Luxury Writing',K:'Executive Combo Gift Sets',B:'Backpacks, Luggage & Travel Bags',C:'Clocks, Watches & Timepieces',S:'Desk Organizers & Stands',H:'Healthcare & Medical Communication',F:'Plush, Keychains & Fun Gifts',T:'Smart Tech & Computer Accessories',O:'Office Stationery Tools',W:'Bottles, Sippers & Flasks'},cf=(c,i)=>i>=48&&i<=50?'Diaries, Notebooks & Planners':i>=80&&i<=88?'Wallets, Cardholders & Pouches':FULL[c];
 const IH=RAW.split('\n').map((l,i)=>{const[f,n,c]=l.split('|');return{u:'raw images/'+encodeURIComponent(f),n,c:cf(c,i+1),b:'Sterling Prime In-House',pr:'',ih:1,sku:'SP-IH-'+String(i+1).padStart(3,'0')}});
 const BR=[['sterling-prime','Sterling Prime',['Sterling Prime In-House']],['portronics','Portronics',['Portronics']],['borosil-larah','Borosil / Larah',['Borosil']],['wonderchef','Wonderchef',['Wonderchef']],['pebble','Pebble',['Pebble']],['noise','Noise',['Noise']],['cross','Cross',['Cross']],['jbl-harman','JBL / Harman',['JBL']],['boat','boAt',['boAt']],['milton','Milton',['Milton']],['adidas','Adidas',['Adidas']],['carlton-london','Carlton London',['Carlton London']],['prestige','Prestige',['Prestige']],['lenovo','Lenovo',['Lenovo']],['philips','Philips',['Philips']]];
 const $=s=>document.querySelector(s),grid=$('#grid'),dlg=$('#dlg'),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),fmt=n=>n.toLocaleString('en-IN');
@@ -836,7 +837,7 @@ chips();draw();
 /* pull the full reference catalogue (catalog_data.js sits beside this file) */
 const ld=document.createElement('script');ld.src='catalog_data.js';
 ld.onload=()=>{try{const ihn={},ihc={};IH.forEach(p=>{ihn[p.sku]=p.n;ihc[p.sku]=p.c});
-P=window.CATALOG_DATA.map(d=>{const ih=d.type=='inhouse',sku=d.model||d.sku;return{u:d.image,n:ih&&ihn[sku]?ihn[sku]:d.name,c:ih&&ihc[sku]?ihc[sku]:d.category_name,b:d.brand,pr:ih?'':(d.price||''),ih:ih?1:0,sku:ih?d.model:(d.sku||d.model)}});
+const ov=window.CATALOG_CATEGORY_OVERRIDES||{};window.CATALOG_DATA.forEach(d=>{if(ov[d.id]){const v=ov[d.id];d.category=v.category;d.category_slug=v.category_slug;d.category_name=v.category_name}});P=window.CATALOG_DATA.map(d=>{const ih=d.type=='inhouse',sku=d.model||d.sku;return{u:d.image,n:ih&&ihn[sku]?ihn[sku]:d.name,c:ih&&ihc[sku]?ihc[sku]:d.category_name,b:d.brand,pr:ih?'':(d.price||''),ih:ih?1:0,sku:ih?d.model:(d.sku||d.model)}});
 chips();draw()}catch(e){}};
 document.head.appendChild(ld);
 /* creative layer */
