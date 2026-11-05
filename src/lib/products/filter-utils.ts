@@ -29,6 +29,7 @@ export function parseSearchParams(searchParams: Record<string, string | string[]
   };
 
   const attributes: Record<string, string[]> = {};
+  const selectedCategory = getArray(searchParams.category)[0];
   
   // We can treat any key that isn't a standard filter as an attribute filter
   const standardKeys = ['q', 'minPrice', 'maxPrice', 'minMoq', 'maxMoq', 'category', 'rating', 'isDiscounted', 'sort', 'page'];
@@ -47,7 +48,7 @@ export function parseSearchParams(searchParams: Record<string, string | string[]
     maxPrice: getNumber(searchParams.maxPrice),
     minMoq: getNumber(searchParams.minMoq),
     maxMoq: getNumber(searchParams.maxMoq),
-    categories: getArray(searchParams.category),
+    categories: selectedCategory ? [selectedCategory] : [],
     attributes,
     rating: getNumber(searchParams.rating),
     isDiscounted: getSingle(searchParams.isDiscounted) === 'true' ? true : undefined,

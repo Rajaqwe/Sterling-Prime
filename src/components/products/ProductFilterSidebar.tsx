@@ -64,7 +64,7 @@ export function FilterControls({
     return () => clearTimeout(handler);
   }, [minPrice, maxPrice, updateFilters, searchParams]);
 
-  const selectedCategories = searchParams.getAll("category");
+  const selectedCategory = searchParams.get("category")?.split(",")[0] || null;
   const selectedRating = searchParams.get("rating");
   const isDiscounted = searchParams.get("isDiscounted") === "true";
   const selectedMinMoq = searchParams.get("minMoq") || "";
@@ -72,7 +72,7 @@ export function FilterControls({
 
   // Calculate total active filters
   const activeFilterCount = Array.from(searchParams.keys()).filter(k => k !== 'sort' && k !== 'q' && k !== 'page').reduce((acc, key) => {
-    return acc + searchParams.getAll(key).length;
+    return acc + (key === "category" ? Number(searchParams.has(key)) : searchParams.getAll(key).length);
   }, 0);
 
   const toggleArrayFilter = (key: string, value: string) => {
@@ -119,12 +119,13 @@ export function FilterControls({
             <div className="flex flex-col gap-1.5">
               {categories.map((cat) => {
                 const val = cat.slug || cat.name;
-                const isSelected = selectedCategories.includes(val);
+                const isSelected = selectedCategory === val;
                 return (
                   <button
                     key={cat.id}
                     type="button"
-                    onClick={() => toggleArrayFilter("category", val)}
+                    aria-pressed={isSelected}
+                    onClick={() => updateFilters({ category: isSelected ? null : val })}
                     className={`flex items-center justify-between text-left text-sm min-h-10 py-1.5 px-2.5 rounded-lg transition-ui touch-manipulation ${isSelected
                         ? "bg-primary text-primary-foreground font-medium"
                         : "text-foreground hover:bg-secondary/70"
@@ -337,7 +338,7 @@ export function MobileFilterDrawer(props: FilterSidebarProps) {
   const { searchParams } = useFilters();
 
   const activeFilterCount = Array.from(searchParams.keys()).filter(k => k !== 'sort' && k !== 'q' && k !== 'page').reduce((acc, key) => {
-    return acc + searchParams.getAll(key).length;
+    return acc + (key === "category" ? Number(searchParams.has(key)) : searchParams.getAll(key).length);
   }, 0);
 
   return (

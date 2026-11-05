@@ -30,13 +30,14 @@ export function ActiveFilters() {
     });
   }
 
-  searchParams.getAll("category").forEach((value) => {
+  const selectedCategory = searchParams.get("category")?.split(",")[0] || null;
+  if (selectedCategory) {
     activeFilters.push({
       key: "category",
-      value,
-      label: `Category: ${value}`,
+      value: selectedCategory,
+      label: `Category: ${selectedCategory}`,
     });
-  });
+  }
 
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
@@ -104,7 +105,7 @@ export function ActiveFilters() {
   const removeFilter = (filter: { key: string; value: string }) => {
     if (filter.key === "price") return updateFilters({ minPrice: null, maxPrice: null });
     if (filter.key === "moq") return updateFilters({ minMoq: null, maxMoq: null });
-    if (filter.key === "q" || filter.key === "rating" || filter.key === "isDiscounted") {
+    if (filter.key === "q" || filter.key === "rating" || filter.key === "isDiscounted" || filter.key === "category") {
       return updateFilters({ [filter.key]: null });
     }
 

@@ -814,12 +814,12 @@ function chips(){const cc={};P.forEach(p=>cc[p.c]=(cc[p.c]||0)+1);CATS=Object.ke
 $('#chips').innerHTML=`<button class="chip" data-c="">All products</button>`+CATS.map((k,i)=>`<button class="chip" data-c="${i}">${esc(k)}</button>`).join('');
 $('#brails').innerHTML=P.length>200?BR.map(b=>{const n=P.filter(p=>b[2].includes(p.b)).length;return n?`<button class="chip bchip" data-b="${b[0]}" title="${b[1]}"><img src="assets/brand_logos/${b[0]}.svg" alt=""><span class="bname">${esc(b[1])}</span></button>`:''}).join(''):'';
 mark();mq()}
-function mark(){document.querySelectorAll('#chips .chip').forEach(c=>c.classList.toggle('on',c.dataset.c===cat));document.querySelectorAll('#brails .chip').forEach(c=>c.classList.toggle('on',c.dataset.b===br))}
+function mark(){document.querySelectorAll('#chips .chip').forEach(c=>{const selected=!br&&c.dataset.c===cat;c.classList.toggle('on',selected);c.setAttribute('aria-pressed',String(selected))});document.querySelectorAll('#brails .chip').forEach(c=>{const selected=!cat&&c.dataset.b===br;c.classList.toggle('on',selected);c.setAttribute('aria-pressed',String(selected))})}
 function flt(){const bn=br&&BR.find(b=>b[0]==br)[2],cn=cat===''?'':CATS[cat],q=qs;return P.filter(p=>(!cn||p.c===cn)&&(!bn||bn.includes(p.b))&&(!q||(p.n+' '+p.sku+' '+p.b).toLowerCase().includes(q)))}
 const card=(p,i)=>`<div class="card${p.ih?' ih':''}" data-i="${i}"><button type="button" class="card-open"><span class="card-media"><span class="card-skeleton" aria-hidden="true"></span><img loading="${i<4?"eager":"lazy"}" decoding="async" fetchpriority="${i<2?"high":"auto"}" src="${p.u}" alt="${esc(p.n)}"></span><div class="m"><b>${esc(p.n)}</b><small>${p.b&&String(p.b).toLowerCase()!=='null'?esc(p.b):''}${p.pr&&String(p.pr).toLowerCase()!=='null'?' · '+esc(p.pr):''}</small></div></button>${slBtn(p)}</div>`;
 function draw(reset=true){if(reset){Lc=flt();shown=INITIAL_PRODUCTS;drawn=0;grid.innerHTML='';$('#cnt').textContent=(br||cat!==''||qs)?fmt(Lc.length)+' products':'5000+ products';if(!Lc.length)grid.innerHTML='<p class="sub">No products match.</p>'}
 grid.insertAdjacentHTML('beforeend',Lc.slice(drawn,shown).map((p,k)=>card(p,drawn+k)).join(''));drawn=Math.min(shown,Lc.length);watchProductCards();const remaining=Lc.length-drawn;$('#more').style.display=remaining>0?'block':'none';$('#more').textContent=remaining>0?'View '+Math.min(PRODUCTS_PER_CLICK,remaining)+' more products':'All products loaded'}
-function pick(e){const b=e.target.closest('.chip');if(!b)return;if('b' in b.dataset){br=br==b.dataset.b?'':b.dataset.b}else cat=b.dataset.c;mark();draw()}
+function pick(e){const b=e.target.closest('.chip');if(!b)return;if('b' in b.dataset){br=br===b.dataset.b?'':b.dataset.b;cat=''}else{cat=cat===b.dataset.c?'':b.dataset.c;br=''}mark();draw()}
 $('#chips').onclick=$('#brails').onclick=pick;
 $('#q').oninput=e=>{qs=e.target.value.toLowerCase();draw()};
 $('#more').onclick=()=>loadNextProducts();
