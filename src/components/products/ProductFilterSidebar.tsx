@@ -64,7 +64,7 @@ export function FilterControls({
     return () => clearTimeout(handler);
   }, [minPrice, maxPrice, updateFilters, searchParams]);
 
-  const selectedCategory = searchParams.get("category");
+  const selectedCategory = searchParams.get("category")?.split(",")[0] || null;
   const selectedRating = searchParams.get("rating");
   const isDiscounted = searchParams.get("isDiscounted") === "true";
   const selectedMinMoq = searchParams.get("minMoq") || "";
