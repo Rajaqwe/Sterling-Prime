@@ -30,7 +30,7 @@ export function ActiveFilters() {
     });
   }
 
-  const selectedCategory = searchParams.get("category");
+  const selectedCategory = searchParams.get("category")?.split(",")[0] || null;
   if (selectedCategory) {
     activeFilters.push({
       key: "category",
