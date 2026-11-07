@@ -1,12 +1,18 @@
-# <sterling prime webstie>
+# Sterling Prime — GitHub Pages website
 
-Built with [Wasp](https://wasp.sh), based on the [Open Saas](https://opensaas.sh) template.
+This repository contains the standalone static Sterling Prime website.
 
-## Development
+## Live website
+https://rajaqwe.github.io/Sterling-Prime/
 
-### Running locally
+## Files
+- `index.html` — complete website, including the Journey, catalogue, search, filters, shortlist and enquiry interactions.
+- `catalog_data.js` — catalogue data loaded by the homepage.
+- `assets/brand_logos/` — brand logos used by the homepage.
+- `raw images/` — product images referenced by the catalogue.
 
-- Make sure you have the `.env.client` and `.env.server` files with correct dev values in the root of the project.
-- Run the database with `wasp start db` and leave it running.
-- Run `wasp start` and leave it running.
-- [OPTIONAL]: If this is the first time starting the app, or you've just made changes to your entities/prisma schema, also run `wasp db migrate-dev`.
+## Deployment
+GitHub Pages serves the repository root. Keep `index.html`, `catalog_data.js`, `assets/` and `raw images/` in their current locations. No Node.js, Next.js build, server, database or Vercel deployment is required for this website.
+
+## Local preview
+Open `index.html` in a browser, or run a simple static HTTP server from the repository root. Do not move the catalogue or image folders without updating their paths in the homepage.
