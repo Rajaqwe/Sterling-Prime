@@ -685,7 +685,7 @@ dialog{max-width:min(clamp(900px,62vw,1400px),94vw)}
       <div class="sample-fields">
         <label>Name<input name="name" id="sampleName" type="text" placeholder="Your full name" autocomplete="name" required></label>
         <label>Company<input name="company" type="text" placeholder="Company name" autocomplete="organization" required></label>
-        <label>Mobile Number<input name="mobile" type="tel" placeholder="Mobile number" autocomplete="tel" inputmode="tel" pattern="[0-9+()\\s-]{8,18}" required></label>
+        <label>Mobile Number<input name="mobile" type="tel" placeholder="Mobile number" autocomplete="tel" inputmode="tel" pattern="[0-9+() -]{8,18}" required></label>
         <label>Quantity<input name="quantity" type="number" min="1" step="1" placeholder="Required quantity" required></label>
         <label class="sample-span">Delivery Address<textarea name="address" rows="3" placeholder="Full delivery address with PIN code" autocomplete="street-address" required></textarea></label>
       </div>
