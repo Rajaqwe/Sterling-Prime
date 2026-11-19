@@ -620,6 +620,10 @@ dialog{max-width:min(clamp(900px,62vw,1400px),94vw)}
 }
 
 /* Product details and Get a Sample request form */
+.dg .product-description{margin:0;padding:13px 15px;border:1px solid #ded0fb;border-radius:14px;background:linear-gradient(135deg,#f7f1ff,#fff);display:flex;flex-direction:column;gap:7px}
+.dg .product-description[hidden]{display:none}
+.dg .product-description h4{margin:0;color:#35106f;font-size:.92rem;font-weight:800}
+
 .dg .product-detail{margin:0;color:var(--mu);font-size:.94rem;line-height:1.6;max-height:7.2em;overflow:auto}
 .dg .product-detail[hidden]{display:none}
 .dg .sample-trigger{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;min-height:52px;border:2px solid #6b18d8;background:linear-gradient(110deg,#f5edff,#fff);color:#35106f;box-shadow:0 8px 22px -12px #6b18d8aa}
@@ -676,7 +680,7 @@ dialog{max-width:min(clamp(900px,62vw,1400px),94vw)}
 <div class="cf rv" style="--d:.4s"><svg class="ci " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5l8-2v18M12 9h8v12M7 9h2M7 13h2M7 17h2M15 13h2M15 17h2"/></svg><small>Established in</small><b>Maharashtra, India</b></div>
 <div class="cf rv" style="--d:.5s"><svg class="ci " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg><small>Delivery</small><b>Pan India · 5–7 days</b><em>from date of confirmation</em></div></div></section>
 <footer><div class="fbig" aria-hidden="true">Gift. Delight. Repeat.</div><img id="flg" alt="Sterling Prime" style="height:64px;width:auto"><h2>Let’s make every desk a brand experience.</h2><a class="btn" href="https://wa.me/918758294908?text=Hi%20Sterling%20Prime%2C%20I%20would%20like%20to%20discuss%20corporate%20gifting%20requirements.">Chat on WhatsApp</a><p>Thoughtful Gifts. Stronger Relationships.<br>© 2026 Sterling Prime. All Rights Reserved. www.sterlingprime.com • Pan-India Corporate Gifting Solutions</p></footer>
-<dialog id="dlg"><div class="dg"><img id="di" alt=""><div><button class="x" aria-label="Close" onclick="dlg.close()">×</button><button class="x" id="pv" aria-label="Previous" style="top:50%;left:14px;right:auto">‹</button><button class="x" id="nx" aria-label="Next" style="top:50%;right:14px">›</button><small id="ds"></small><h3 id="dn"></h3><p id="dc" style="color:var(--mu)"></p><p id="dd" class="product-detail" hidden></p><a class="btn" id="de" target="_blank" rel="noopener">Enquire on WhatsApp</a><button class="btn sample-trigger" id="getSample" type="button">▣ &nbsp; Get a Sample <span aria-hidden="true">›</span></button><button class="btn alt" id="slPop" type="button" aria-pressed="false">Add to shortlist</button><a class="btn alt" id="dm">Email enquiry</a></div></div></dialog>
+<dialog id="dlg"><div class="dg"><img id="di" alt=""><div><button class="x" aria-label="Close" onclick="dlg.close()">×</button><button class="x" id="pv" aria-label="Previous" style="top:50%;left:14px;right:auto">‹</button><button class="x" id="nx" aria-label="Next" style="top:50%;right:14px">›</button><small id="ds"></small><h3 id="dn"></h3><p id="dc" style="color:var(--mu)"></p><section id="productDescription" class="product-description" hidden><h4>Product Description</h4><p id="dd" class="product-detail"></p></section><a class="btn" id="de" target="_blank" rel="noopener">Enquire on WhatsApp</a><button class="btn sample-trigger" id="getSample" type="button">▣ &nbsp; Get a Sample <span aria-hidden="true">›</span></button><button class="btn alt" id="slPop" type="button" aria-pressed="false">Add to shortlist</button><a class="btn alt" id="dm">Email enquiry</a></div></div></dialog>
 <dialog id="sampleDlg" aria-labelledby="sampleTitle">
   <div class="sample-shell">
     <button class="x sample-close" type="button" aria-label="Close sample request" id="sampleClose">×</button>
@@ -972,7 +976,7 @@ $('#more').onclick=()=>loadNextProducts();
 grid.onmousemove=e=>{const c=e.target.closest('.card');if(!c)return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;c.style.transform=`rotateY(${(x-.5)*16}deg) rotateX(${(.5-y)*16}deg) translateZ(12px)`;c.style.setProperty('--gx',x*100+'%');c.style.setProperty('--gy',y*100+'%')};
 grid.onmouseout=e=>{const c=e.target.closest('.card');if(c)c.style.transform=''};
 function openP(p){curP=p;slDlg(p);$('#di').src=p.u;$('#di').alt=p.n;$('#dn').textContent=p.n;$('#ds').textContent=p.sku+' · '+p.b;$('#dc').textContent=p.c+(p.pr?' · Listed price '+p.pr:'');
-const description=Array.isArray(p.description)?p.description.filter(Boolean).join(' · '):String(p.description||'').trim();$('#dd').textContent=description;$('#dd').hidden=!description;
+const description=Array.isArray(p.description)?p.description.filter(Boolean).join(' · '):String(p.description||'').trim();$('#dd').textContent=description;$('#productDescription').hidden=!description;
 $('#sampleProduct').textContent=p.n+(p.sku?' · SKU: '+p.sku:'');
 $('#de').href='https://wa.me/918758294908?text='+encodeURIComponent(`Hi Sterling Prime, I would like to order / get a quote for '${p.n}' (SKU: ${p.sku} | Brand: ${p.b} | Category: ${p.c}). Please share bulk B2B pricing and customization options.`);$('#dm').href='mailto:info@mysterling.in?subject='+encodeURIComponent('Enquiry: '+p.n+' ('+p.sku+')')+'&body='+encodeURIComponent(`Hi Sterling Prime, I would like a quote for '${p.n}' (SKU: ${p.sku} | Brand: ${p.b}). Please share bulk B2B pricing and customization options.`);if(!dlg.open)dlg.showModal()}
 const sampleDialog=$('#sampleDlg');
