@@ -91,7 +91,7 @@ function layout(force){
   const mH=ch*(wide?0.86:0.34);
   fs=Math.min(mW/bw,mH/bh);
   dw=bw*fs;dh=bh*fs;
-  cx=wide?Math.round(cw*0.74):Math.round(cw*0.5);
+  cx=wide?Math.round(cw*0.80):Math.round(cw*0.5);
   cy=wide?Math.round(ch*0.5):Math.round(ch-dh*0.5-42);
   ox=Math.round(cx-dw*0.5);oy=Math.round(cy-dh*0.5);
   R=Math.min(180,Math.max(70,dw*0.19));R2=R*R;
