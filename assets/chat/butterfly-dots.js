@@ -87,11 +87,15 @@ function layout(force){
   cw=nw;ch=nh;
   dpr=Math.min(window.devicePixelRatio||1,2);
   const wide=cw>900;
-  const mW=wide?Math.min(cw*0.5,900):Math.min(cw*0.84,480);
+  const copy=hero.querySelector('.c');
+  const textRight=wide&&copy?Math.min(cw,Math.max(0,copy.getBoundingClientRect().right-rect.left)):cw*0.5;
+  const safeRight=wide?cw-cw*0.05:cw;
+  const freeW=Math.max(0,safeRight-textRight);
+  const mW=wide?Math.min(freeW*0.9,900):Math.min(cw*0.84,480);
   const mH=ch*(wide?0.86:0.34);
   fs=Math.min(mW/bw,mH/bh);
   dw=bw*fs;dh=bh*fs;
-  cx=wide?Math.round(cw*0.80):Math.round(cw*0.5);
+  cx=wide?Math.round(textRight+freeW*0.5):Math.round(cw*0.5);
   cy=wide?Math.round(ch*0.5):Math.round(ch-dh*0.5-42);
   ox=Math.round(cx-dw*0.5);oy=Math.round(cy-dh*0.5);
   R=Math.min(180,Math.max(70,dw*0.19));R2=R*R;
