@@ -9,7 +9,7 @@
 <style>
 :root{color-scheme:light;--bg:#fbf8ff;--s:#ffffff;--tx:#1b1438;--mu:#5d567e;--pk:#ff3d9a;--or:#ff9a1f;--bl:#2f8bff;--vi:#8b4dff;--g:linear-gradient(120deg,var(--pk),var(--or) 45%,var(--bl) 80%,var(--vi));box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;scroll-padding-top:70px}
-body{background:var(--bg);color:var(--tx);font:400 1rem/1.55 'Bricolage Grotesque',system-ui,sans-serif;overflow-x:hidden}
+body{background:linear-gradient(120deg,#fbe5f2 0%,#f7efff 48%,#e5efff 100%) fixed;color:var(--tx);font:400 1rem/1.55 'Bricolage Grotesque',system-ui,sans-serif;overflow-x:hidden}
 a{color:inherit;text-decoration:none}:focus-visible{outline:3px solid var(--or);outline-offset:3px}
 nav{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:22px;padding:12px 5vw;padding-top:calc(12px + env(safe-area-inset-top,0px));background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(14px)}
 nav img{height:38px}nav .sp{flex:1}nav a.l{color:var(--mu);font-weight:600}nav a.l:hover{color:var(--tx)}
@@ -54,7 +54,7 @@ dialog::backdrop{background:#1b143899;backdrop-filter:blur(6px)}
 @media(max-width:700px){.dg{grid-template-columns:1fr}nav a.l{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 
-.aur{position:fixed;inset:-10%;z-index:-1;background:radial-gradient(40vmax at 15% 20%,#ff3d9a30,transparent),radial-gradient(45vmax at 85% 30%,#2f8bff30,transparent),radial-gradient(40vmax at 50% 90%,#8b4dff30,transparent);animation:dr 16s ease-in-out infinite alternate}@keyframes dr{to{transform:translate(-4%,5%) scale(1.15) rotate(6deg)}}
+.aur{display:none}
 #pb{position:fixed;top:0;left:0;height:3px;background:var(--g);z-index:30;width:0}
 #cur{position:fixed;left:0;top:0;width:26px;height:26px;pointer-events:none;z-index:50;filter:drop-shadow(0 0 6px var(--pk))}@media(hover:none){#cur{display:none}}
 .fw{animation:fw .22s ease-in-out infinite alternate;transform-origin:12px 12px}@keyframes fw{to{transform:scaleX(.3)}}
