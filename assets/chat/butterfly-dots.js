@@ -51,35 +51,32 @@ for(let i=0;i<N;i++){
 const LUN=2048,SIN=new Float32Array(LUN);
 for(let i=0;i<LUN;i++)SIN[i]=Math.sin(i/LUN*6.283185307179586);
 
-/* Canvas 2D renderer: avoids a second WebGL context and works in standard Chrome */
-const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
-if(!ctx){canvas.remove();hint.remove();return;}
+const gl=canvas.getContext('webgl',{alpha:true,antialias:false,depth:false,stencil:false,premultipliedAlpha:false});
+if(!gl){canvas.remove();hint.remove();return;}
 let contextLost=false;
+canvas.addEventListener('webglcontextlost',function(e){e.preventDefault();contextLost=true;});
+const VSH='attribute vec2 aPos;attribute vec3 aCol;attribute float aSize;uniform vec2 uRes;uniform float uSc;varying vec3 vCol;void main(){vCol=aCol;vec2 c=(aPos*uSc)/uRes*2.0-1.0;gl_Position=vec4(c.x,-c.y,0.0,1.0);gl_PointSize=max(1.0,aSize*uSc);}';
+const FSH='precision mediump float;varying vec3 vCol;uniform float uAl;void main(){vec2 d=gl_PointCoord-vec2(0.5);float r=length(d)*2.0;float a=smoothstep(1.0,0.45,r);gl_FragColor=vec4(vCol,uAl*a);}';
+function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o;}
+const pr=gl.createProgram();
+gl.attachShader(pr,sh(gl.VERTEX_SHADER,VSH));
+gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FSH));
+gl.linkProgram(pr);
+if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(pr));
+gl.useProgram(pr);
+const locPos=gl.getAttribLocation(pr,'aPos'),locCol=gl.getAttribLocation(pr,'aCol'),locSize=gl.getAttribLocation(pr,'aSize');
+const uRes=gl.getUniformLocation(pr,'uRes'),uSc=gl.getUniformLocation(pr,'uSc'),uAl=gl.getUniformLocation(pr,'uAl');
+const colBuf=gl.createBuffer(),posBuf=gl.createBuffer();
 
-/* Group particles into 512 nearby colour shades for efficient Canvas 2D drawing. */
-const COLOR_BUCKETS=512,TAU=Math.PI*2;
-const bucketIds=new Uint16Array(N),bucketCounts=new Uint32Array(COLOR_BUCKETS);
-for(let i=0;i<N;i++){
-  const key=((cr[i]>>5)<<6)|((cg[i]>>5)<<3)|(cb[i]>>5);
-  bucketIds[i]=key;
-  bucketCounts[key]++;
-}
-const bucketLists=new Array(COLOR_BUCKETS);
-const bucketCursor=new Uint32Array(COLOR_BUCKETS);
-const bucketColors=new Array(COLOR_BUCKETS);
-for(let b=0;b<COLOR_BUCKETS;b++){
-  bucketLists[b]=new Uint32Array(bucketCounts[b]);
-  const r=Math.round(((b>>6)&7)*255/7);
-  const g=Math.round(((b>>3)&7)*255/7);
-  const bl=Math.round((b&7)*255/7);
-  bucketColors[b]='rgb('+r+','+g+','+bl+')';
-}
-for(let i=0;i<N;i++){
-  const b=bucketIds[i];
-  bucketLists[b][bucketCursor[b]++]=i;
-}
+const sAb=new ArrayBuffer(N*8),su8=new Uint8Array(sAb),sf32=new Float32Array(sAb);
+for(let i=0;i<N;i++){const o=i*8;su8[o]=cr[i];su8[o+1]=cg[i];su8[o+2]=cb[i];su8[o+3]=255;}
 let psizeCSS=2;
-function uploadStatic(){}
+function uploadStatic(){
+  gl.bindBuffer(gl.ARRAY_BUFFER,colBuf);
+  for(let i=0;i<N;i++)sf32[i*2+1]=psizeCSS*sj[i];
+  gl.bufferData(gl.ARRAY_BUFFER,sAb,gl.STATIC_DRAW);
+}
+
 const RM=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let cw=0,ch=0,dpr=1,rs=1,fs=1,dw=0,dh=0,cx=0,cy=0,ox=0,oy=0,R=120,R2=14400,MAXD=162,MAXD2=26244,posInit=false;
 function layout(force){
@@ -109,14 +106,18 @@ function layout(force){
   canvas.width=Math.max(1,Math.round(cw*dpr*rs));
   canvas.height=Math.max(1,Math.round(ch*dpr*rs));
   canvas.style.width=cw+'px';canvas.style.height=ch+'px';
-  ctx.setTransform(dpr*rs,0,0,dpr*rs,0,0);
+  gl.viewport(0,0,canvas.width,canvas.height);
   uploadStatic();
   hint.style.left=cx+'px';
   hint.style.top=Math.min(ch-34,oy+dh+10)+'px';
   hint.textContent=wide?'Move through the butterfly · click to burst':'Touch the butterfly · tap to burst';
 }
 layout(true);
-
+gl.enableVertexAttribArray(locCol);gl.vertexAttribPointer(locCol,3,gl.UNSIGNED_BYTE,true,8,0);
+gl.enableVertexAttribArray(locSize);gl.vertexAttribPointer(locSize,1,gl.FLOAT,false,8,4);
+gl.bindBuffer(gl.ARRAY_BUFFER,posBuf);gl.bufferData(gl.ARRAY_BUFFER,pos.byteLength,gl.DYNAMIC_DRAW);
+gl.enableVertexAttribArray(locPos);gl.vertexAttribPointer(locPos,2,gl.FLOAT,false,8,0);
+gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
 
 const INTRO_DUR=RM?0:1250,STAG=RM?0:430;
 let introDone=INTRO_DUR===0;
@@ -179,7 +180,7 @@ function setTier(t){tier=t;na=Math.floor(N*TIERS[t][0]);rs=TIERS[t][1];layout(tr
 const FORCE=2700,SWIRL=0.65,DAMP=5.2,VMAX=2400,VMAX2=VMAX*VMAX,WOBB=RM?0:1.25;
 const SWIPE=15,DRAG=110;
 let last=performance.now(),t0=0,introT0=-1;
-window.__dots={n:N,info:function(){return{fps:Math.round(1000/emaDt),tier:tier,active:na,res:rs,renderer:'Canvas2D'};}};
+window.__dots={n:N,info:function(){return{fps:Math.round(1000/emaDt),tier:tier,active:na,res:rs};}};
 
 function frame(now){
   requestAnimationFrame(frame);
@@ -258,24 +259,13 @@ function frame(now){
   pmx=mx;pmy=my;
 
   const al=0.9*Math.min(1,it/650);
-  ctx.clearRect(0,0,cw,ch);
-  ctx.globalAlpha=al;
-  for(let b=0;b<COLOR_BUCKETS;b++){
-    const list=bucketLists[b];
-    if(!list.length)continue;
-    ctx.fillStyle=bucketColors[b];
-    ctx.beginPath();
-    for(let j=0;j<list.length;j++){
-      const i=list[j];
-      if(i>=na)continue;
-      const i2=i*2,x=pos[i2],y=pos[i2+1];
-      const radius=Math.max(0.55,psizeCSS*sj[i]*0.5);
-      ctx.moveTo(x+radius,y);
-      ctx.arc(x,y,radius,0,TAU);
-    }
-    ctx.fill();
-  }
-  ctx.globalAlpha=1;
+  gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.uniform2f(uRes,canvas.width,canvas.height);
+  gl.uniform1f(uSc,dpr*rs);
+  gl.uniform1f(uAl,al);
+  gl.bindBuffer(gl.ARRAY_BUFFER,posBuf);
+  gl.bufferSubData(gl.ARRAY_BUFFER,0,pos.subarray(0,na*2));
+  gl.drawArrays(gl.POINTS,0,na);
 }
 requestAnimationFrame(frame);
 })();
