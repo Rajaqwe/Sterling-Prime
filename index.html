@@ -532,6 +532,9 @@ dialog{max-width:min(clamp(900px,62vw,1400px),94vw)}
 }
 #brails.catalogue-marquee{margin:4px 0 2px}
 #chips{display:flex;flex-direction:column;gap:8px;width:100%;max-width:100%;overflow:visible;padding:0;scrollbar-width:none;overscroll-behavior:initial}
+#chips .category-line{display:flex;align-items:center;gap:10px;width:100%;min-width:0}
+#chips .category-line>.catalogue-marquee{flex:1 1 auto;width:auto;min-width:0}
+#chips .all-products-fixed{flex:none}
 .catalogue-marquee-track{display:flex;width:max-content;animation:catalogueMarquee var(--duration,60s) linear infinite;will-change:transform}
 .catalogue-marquee.is-reverse .catalogue-marquee-track{animation-direction:reverse}
 .catalogue-marquee-set{display:flex;flex:none;align-items:center;gap:10px;padding-right:10px}
@@ -993,12 +996,13 @@ function loadNextProducts(){if(loadingMoreProducts||drawn>=Lc.length)return;load
 function count(el,n){let v=0;const st=Math.ceil(n/40),t=setInterval(()=>{v=Math.min(n,v+st);el.textContent=fmt(v);if(v>=n)clearInterval(t)},30)}
 function mq(){$('#mq').innerHTML='<div>'+CATS.map(c=>c+' ✦ ').join('').repeat(CATS.length>12?3:8)+'</div>'}
 function marqueeSet(html,hidden=false){const content=hidden?html.replace(/<button /g,'<button tabindex="-1" '):html;return `<div class="catalogue-marquee-set"${hidden?' aria-hidden="true"':''}>${content}</div>`}
-function marqueeRow(items,reverse=false){const html=items.join('');return `<div class="catalogue-marquee${reverse?' is-reverse':''}" aria-label="${reverse?'More categories':'Categories'}"><div class="catalogue-marquee-track">${marqueeSet(html)}${marqueeSet(html,true)}</div></div>`}
+function marqueeRow(items,reverse=false,fixedAll=false){const html=items.join('');const rail=`<div class="catalogue-marquee${reverse?' is-reverse':''}" aria-label="${reverse?'More categories':'Categories'}"><div class="catalogue-marquee-track">${marqueeSet(html)}${marqueeSet(html,true)}</div></div>`;return `<div class="category-line">${fixedAll?'<button class="chip all-products-fixed" data-c="">All products</button>':''}${rail}</div>`}
 function speedMarquees(){document.querySelectorAll('.catalogue-marquee').forEach(rail=>{const first=rail.querySelector('.catalogue-marquee-set:not([aria-hidden="true"])');if(!first)return;const width=first.scrollWidth||first.getBoundingClientRect().width||1500,pps=rail.id==='brails'?34:44;rail.style.setProperty('--duration',Math.max(18,width/pps)+'s')})}
 function pauseMarquee(rail){if(!rail)return;rail.classList.add('is-paused');clearTimeout(rail._resumeTimer);rail._resumeTimer=setTimeout(()=>rail.classList.remove('is-paused'),3000)}
 function chips(){const cc={};P.forEach(p=>cc[p.c]=(cc[p.c]||0)+1);CATS=Object.keys(cc);
-const categoryItems=[`<button class="chip" data-c="">All products</button>`,...CATS.map((k,i)=>`<button class="chip" data-c="${i}">${esc(k)}</button>`)];
-const half=Math.ceil(categoryItems.length/2);$('#chips').innerHTML=marqueeRow(categoryItems.slice(0,half))+(categoryItems.length>half?marqueeRow(categoryItems.slice(half),true):'');
+const categoryItems=CATS.map((k,i)=>`<button class="chip" data-c="${i}">${esc(k)}</button>`);
+const perRow=Math.ceil(categoryItems.length/3),rows=[categoryItems.slice(0,perRow),categoryItems.slice(perRow,perRow*2),categoryItems.slice(perRow*2)];
+$('#chips').innerHTML=rows.map((items,i)=>items.length?marqueeRow(items,i===1,i===0):'').join('');
 const brandItems=P.length>200?BR.map(b=>{const n=P.filter(p=>b[2].includes(p.b)).length;return n?`<button class="chip bchip" data-b="${b[0]}" title="${b[1]}"><img src="assets/brand_logos/${b[0]}.svg" alt=""><span class="bname">${esc(b[1])}</span></button>`:''}).filter(Boolean):[];
 $('#brails').innerHTML=brandItems.length?`<div class="catalogue-marquee-track">${marqueeSet(brandItems.join(''))}${marqueeSet(brandItems.join(''),true)}</div>`:'';
 mark();mq();requestAnimationFrame(speedMarquees)}
