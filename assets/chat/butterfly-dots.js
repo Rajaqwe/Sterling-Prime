@@ -84,32 +84,23 @@ for(let i=0;i<N;i++){
 const LUN=2048,SIN=new Float32Array(LUN);
 for(let i=0;i<LUN;i++)SIN[i]=Math.sin(i/LUN*6.283185307179586);
 
-/* ---- WebGL point renderer ---- */
-const gl=canvas.getContext('webgl',{alpha:true,antialias:false,depth:false,stencil:false,premultipliedAlpha:false});
-if(!gl){$('noGl').style.display='grid';return;}
-canvas.addEventListener('webglcontextlost',function(e){e.preventDefault();location.reload();});
-const VSH='attribute vec2 aPos;attribute vec3 aCol;attribute float aSize;uniform vec2 uRes;uniform float uSc;varying vec3 vCol;void main(){vCol=aCol;vec2 c=(aPos*uSc)/uRes*2.0-1.0;gl_Position=vec4(c.x,-c.y,0.0,1.0);gl_PointSize=max(1.0,aSize*uSc);}';
-const FSH='precision mediump float;varying vec3 vCol;uniform float uAl;void main(){vec2 d=gl_PointCoord-vec2(0.5);float r=length(d)*2.0;float a=smoothstep(1.0,0.45,r);gl_FragColor=vec4(vCol,uAl*a);}';
-function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o;}
-const pr=gl.createProgram();
-gl.attachShader(pr,sh(gl.VERTEX_SHADER,VSH));
-gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FSH));
-gl.linkProgram(pr);
-if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(pr));
-gl.useProgram(pr);
-const locPos=gl.getAttribLocation(pr,'aPos'),locCol=gl.getAttribLocation(pr,'aCol'),locSize=gl.getAttribLocation(pr,'aSize');
-const uRes=gl.getUniformLocation(pr,'uRes'),uSc=gl.getUniformLocation(pr,'uSc'),uAl=gl.getUniformLocation(pr,'uAl');
-const colBuf=gl.createBuffer(),posBuf=gl.createBuffer();
-
-/* static interleaved buffer: [r,g,b,pad][size:f32] stride 8 */
-const sAb=new ArrayBuffer(N*8),su8=new Uint8Array(sAb),sf32=new Float32Array(sAb);
-for(let i=0;i<N;i++){const o=i*8;su8[o]=cr[i];su8[o+1]=cg[i];su8[o+2]=cb[i];su8[o+3]=255;}
-let psizeCSS=2;
-function uploadStatic(){
-  gl.bindBuffer(gl.ARRAY_BUFFER,colBuf);
-  for(let i=0;i<N;i++)sf32[i*2+1]=psizeCSS*sj[i];
-  gl.bufferData(gl.ARRAY_BUFFER,sAb,gl.STATIC_DRAW);
+/* ---- Canvas2D particle renderer: works without WebGL/GPU acceleration ---- */
+const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
+if(!ctx){$('noGl').style.display='grid';return;}
+$('noGl').style.display='none';
+const COLOR_BUCKETS=4096,TAU=Math.PI*2;
+const bucketLists=Array.from({length:COLOR_BUCKETS},()=>[]);
+const bucketColors=new Array(COLOR_BUCKETS);
+for(let i=0;i<N;i++){
+  const r=cr[i]>>4,g=cg[i]>>4,b=cb[i]>>4;
+  const key=(r<<8)|(g<<4)|b;
+  if(!bucketColors[key]){
+    bucketColors[key]='rgb('+Math.min(255,r*16+8)+','+Math.min(255,g*16+8)+','+Math.min(255,b*16+8)+')';
+  }
+  bucketLists[key].push(i);
 }
+let psizeCSS=2;
+function uploadStatic(){}
 
 /* ---- hero-scoped layout ---- */
 const hero=$('top');
@@ -137,7 +128,7 @@ function layout(){
   canvas.width=Math.max(1,Math.round(vw*dpr*rs));
   canvas.height=Math.max(1,Math.round(vh*dpr*rs));
   canvas.style.width=vw+'px';canvas.style.height=vh+'px';
-  gl.viewport(0,0,canvas.width,canvas.height);
+  ctx.setTransform(dpr*rs,0,0,dpr*rs,0,0);
   uploadStatic();
 }
 layout();
@@ -292,13 +283,23 @@ function frame(now){
   pmx=mx;pmy=my;
 
   const al=0.9*Math.min(1,it/650);
-  gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.uniform2f(uRes,canvas.width,canvas.height);
-  gl.uniform1f(uSc,dpr*rs);
-  gl.uniform1f(uAl,al);
-  gl.bindBuffer(gl.ARRAY_BUFFER,posBuf);
-  gl.bufferSubData(gl.ARRAY_BUFFER,0,pos.subarray(0,na*2));
-  gl.drawArrays(gl.POINTS,0,na);
+  ctx.clearRect(0,0,vw,vh);
+  ctx.globalAlpha=al;
+  for(let key=0;key<COLOR_BUCKETS;key++){
+    const list=bucketLists[key];
+    if(!list.length)continue;
+    ctx.fillStyle=bucketColors[key];
+    ctx.beginPath();
+    for(let j=0;j<list.length;j++){
+      const i=list[j];
+      if(i>=na)break;
+      const i2=i*2,r=psizeCSS*sj[i]*0.5;
+      ctx.moveTo(pos[i2]+r,pos[i2+1]);
+      ctx.arc(pos[i2],pos[i2+1],r,0,TAU);
+    }
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
 }
 requestAnimationFrame(frame);
 })();
