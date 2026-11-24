@@ -25,7 +25,13 @@ jobs:
           new = '<section class="cta brief" id="brief"><h2 class="rv" style="text-align:center;margin-inline:auto">Plan your gifting in 30 seconds</h2>'
           if old not in html:
               raise SystemExit("Gifting brief heading not found; refusing to deploy without the centering fix.")
-          path.write_text(html.replace(old, new, 1), encoding="utf-8")
+          html = html.replace(old, new, 1)
+          style = """\n<style id="brief-form-centered">\n#bf{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),220px));justify-content:center}\n#bf .btn{grid-column:1/-1;justify-self:center}\n@media(max-width:520px){#bf{grid-template-columns:minmax(0,1fr)}}\n</style>\n"""
+          if 'id="brief-form-centered"' not in html:
+              if "</head>" not in html:
+                  raise SystemExit("Head closing tag missing; refusing to apply form centering.")
+              html = html.replace("</head>", style + "</head>", 1)
+          path.write_text(html, encoding="utf-8")
           PY
 
       - name: Deploy to Cloudflare Pages
