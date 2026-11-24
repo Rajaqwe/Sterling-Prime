@@ -40,12 +40,12 @@ jobs:
           from pathlib import Path
           path = Path("index.html")
           html = path.read_text(encoding="utf-8")
-          old = "if(!R||!B)return;\\nconst w=innerWidth>800"
-          new = "if(!R||!B)return;\\nB.visible=innerWidth>700;\\nconst w=innerWidth>800"
-          if new not in html:
-              if old not in html:
-                  raise SystemExit("Hero butterfly animation anchor not found; refusing to deploy without the mobile-only change.")
-              html = html.replace(old, new, 1)
+          marker = 'id="mobile-hide-hero-butterfly"'
+          style = """\n<style id="mobile-hide-hero-butterfly">\n@media (max-width: 700px) { #gl { display: none !important; visibility: hidden !important; } }\n</style>\n"""
+          if marker not in html:
+              if "</head>" not in html:
+                  raise SystemExit("Head closing tag missing; refusing to apply mobile butterfly visibility fix.")
+              html = html.replace("</head>", style + "</head>", 1)
           path.write_text(html, encoding="utf-8")
           PY
 
