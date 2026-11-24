@@ -34,6 +34,21 @@ jobs:
           path.write_text(html, encoding="utf-8")
           PY
 
+      - name: Hide hero butterfly on mobile screens
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("index.html")
+          html = path.read_text(encoding="utf-8")
+          old = "if(!R||!B)return;\\nconst w=innerWidth>800"
+          new = "if(!R||!B)return;\\nB.visible=innerWidth>700;\\nconst w=innerWidth>800"
+          if new not in html:
+              if old not in html:
+                  raise SystemExit("Hero butterfly animation anchor not found; refusing to deploy without the mobile-only change.")
+              html = html.replace(old, new, 1)
+          path.write_text(html, encoding="utf-8")
+          PY
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
