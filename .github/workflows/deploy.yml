@@ -15,6 +15,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Center gifting brief heading
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("index.html")
+          html = path.read_text(encoding="utf-8")
+          old = '<section class="cta brief" id="brief"><h2 class="rv">Plan your gifting in 30 seconds</h2>'
+          new = '<section class="cta brief" id="brief"><h2 class="rv" style="text-align:center;margin-inline:auto">Plan your gifting in 30 seconds</h2>'
+          if old not in html:
+              raise SystemExit("Gifting brief heading not found; refusing to deploy without the centering fix.")
+          path.write_text(html.replace(old, new, 1), encoding="utf-8")
+          PY
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
