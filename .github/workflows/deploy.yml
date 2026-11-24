@@ -26,7 +26,7 @@ jobs:
           if old not in html:
               raise SystemExit("Gifting brief heading not found; refusing to deploy without the centering fix.")
           html = html.replace(old, new, 1)
-          style = """\n<style id="brief-form-centered">\n#bf{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),220px));justify-content:center}\n#bf .btn{grid-column:1/-1;justify-self:center}\n@media(max-width:520px){#bf{grid-template-columns:minmax(0,1fr)}}\n</style>\n"""
+          style = """\n<style id="brief-form-centered">\n#bf{min-height:205px;align-content:center;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),220px));justify-content:center}\n#bf .btn{grid-column:1/-1;justify-self:center}\n@media(max-width:520px){#bf{grid-template-columns:minmax(0,1fr)}}\n</style>\n"""
           if 'id="brief-form-centered"' not in html:
               if "</head>" not in html:
                   raise SystemExit("Head closing tag missing; refusing to apply form centering.")
