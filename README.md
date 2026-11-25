@@ -3,16 +3,18 @@
 This repository contains the standalone static Sterling Prime website.
 
 ## Live website
-https://rajaqwe.github.io/Sterling-Prime/
+https://mysterling.in/
 
-## Files
-- `index.html` — complete website, including the Journey, catalogue, search, filters, shortlist and enquiry interactions.
-- `catalog_data.js` — catalogue data loaded by the homepage.
-- `assets/brand_logos/` — brand logos used by the homepage.
-- `raw images/` — product images referenced by the catalogue.
+## Site files
+- `index.html` — homepage, Journey, catalogue, search, filters, shortlist, enquiries and product detail links.
+- `catalog_data.js` — compact catalogue records with WebP thumbnail and full-size paths.
+- `product_descriptions.js` — product descriptions loaded on demand.
+- `products/thumbs/` and `products/full/` — catalogue image variants.
+- `assets/brand_logos/`, `assets/chat/` and `assets/img/` — logos, chat effects and homepage imagery.
+
+The current approved catalogue contains 4,936 products. Product share links use unique product IDs; older `?sku=` links remain readable for compatibility.
+
+The legacy `raw images/` folder and previous homepage backups are retained as rollback/source material. Do not delete them as part of this update.
 
 ## Deployment
-GitHub Pages serves the repository root. Keep `index.html`, `catalog_data.js`, `assets/` and `raw images/` in their current locations. No Node.js, Next.js build, server, database or Vercel deployment is required for this website.
-
-## Local preview
-Open `index.html` in a browser, or run a simple static HTTP server from the repository root. Do not move the catalogue or image folders without updating their paths in the homepage.
+GitHub Pages serves the repository root. Keep `index.html`, `catalog_data.js`, `product_descriptions.js`, `assets/` and `products/` in their current locations. No Node.js, Next.js build, server, database or Vercel deployment is required.
