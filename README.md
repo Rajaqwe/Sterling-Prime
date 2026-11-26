@@ -18,3 +18,5 @@ The legacy `raw images/` folder and previous homepage backups are retained as ro
 
 ## Deployment
 GitHub Pages serves the repository root. Keep `index.html`, `catalog_data.js`, `product_descriptions.js`, `assets/` and `products/` in their current locations. No Node.js, Next.js build, server, database or Vercel deployment is required.
+
+<!-- antigravity connected -->
