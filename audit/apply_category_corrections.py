@@ -284,7 +284,7 @@ def main():
     for pid, frm, to in CHANGES:
         p = by_id[pid]
         if p["category_name"] != frm:
-            sys.exit(f"SAFETY STOP: {pid} currently in '{p['category_name']}', expected '{frm}'. Catalogue drifted since audit; re-run verification.")
+            sys.exit(f"SAFETY STOP: {pid} currently in '{p["category_name"]}', expected '{frm}'. Catalogue drifted since audit; re-run verification.")
         if not dry:
             p["category_name"] = to
         applied += 1
