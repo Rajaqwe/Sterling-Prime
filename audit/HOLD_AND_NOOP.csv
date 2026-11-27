@@ -1,0 +1,29 @@
+Product ID,SKU,Product Name,Category,Type,Note
+sp_prod_00658,TGD-0658,CHARGE CRUISER,Audio & Bluetooth Speakers,HOLD,Audit HOLD — business decision required; not moved
+inhouse_0152,SP-IH-152,Custom Branded Plush Mascot – Model 01,Desk Organizers & Stands,HOLD,Audit HOLD — business decision required; not moved
+inhouse_0153,SP-IH-153,Custom Branded Plush Mascot – Model 02,Desk Organizers & Stands,HOLD,Audit HOLD — business decision required; not moved
+sp_prod_00430,TGD-7042,Executive Corporate Desk & Combo Gift Set – Model 7042,"Backpacks, Luggage & Travel Bags",AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_00431,TGD-7045,Executive Corporate Desk & Combo Gift Set – Model 7045,"Backpacks, Luggage & Travel Bags",AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_00433,TGD-7047,Executive Corporate Desk & Combo Gift Set – Model 7047,"Backpacks, Luggage & Travel Bags",AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+inhouse_0033,SP-IH-033,Contoured Metal Pen Holder – Model 03,Desk Organizers & Stands,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+inhouse_0150,SP-IH-150,Magnetic Focus & Stress Relief Fidget Dice,Desk Organizers & Stands,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_00421,TGD-7024,Executive Corporate Desk & Combo Gift Set – Model 7024,Desk Organizers & Stands,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_00423,TGD-7029,Executive Corporate Desk & Combo Gift Set – Model 7029,Desk Organizers & Stands,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_05452,SAL-28MMX28MM,Salido Executive Corporate Gift Item – Model 28mmx28mm,Desk Organizers & Stands,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_05454,SAL-ABD-03,Salido Executive Corporate Gift Item – Model ABD 03,Desk Organizers & Stands,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_03886,ICG-3886,Executive Desk Organizer,Desk Organizers & Stands,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_03888,ICG-3888,Table Calender,Desk Organizers & Stands,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+inhouse_0147,SP-IH-147,Care & Comfort Personal Wellness Kit,Executive Combo Gift Sets,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+inhouse_0148,SP-IH-148,Corporate Health & Immunity Gift Kit,Executive Combo Gift Sets,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_05441,SAL-AKE-013,Salido Executive Corporate Gift Item – Model AKE 013,Executive Combo Gift Sets,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_00324,FNP-0324,Masala Almonds,Festive Hampers & Gourmet Foods,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_02175,LLMF05,Lifelong 3-Speed Control | Stainless Steel Wisk,Home Appliances & Cookware,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_04926,MIL-4926,Milton lissome Set of 12,Home Appliances & Cookware,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_01567,TGD-1567,Anti-Gravity Suction Mug,"Mugs, Cups & Glassware",AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_01188,TGD-9028-18,Executive PU Leather Notebook Organizer – Model 9028-18,Power & Charging Gadgets,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_01244,ATS-UV500,Artis UV500 Universal Travel Adapter with Carry Pouch,Power & Charging Gadgets,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_05269,SAL-5269,Salido Executive Corporate Gift Item – Model Storage Box,Power & Charging Gadgets,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_02494,POR-KEY12,Portronics Key12 Combo – Rechargeable Wireless Keyboard and Mouse with Gradient,Smart Tech & Computer Accessories,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_03803,ICG-3803,Onikuma Gaming Set Mouse + Keyboard Combo,Smart Tech & Computer Accessories,AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_02051,TGD-2051,Executive Award Trophy & Memento – Model GIFT_D-P72-03,"Trophies, Awards & Medals",AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
+sp_prod_04960,ICG-WCAT-P73,Key Ring with Dog Hook Metal Roller Pen Special Leatherette Box Spectacle Case Gents Wallet Card Holder (Colour - Brown / Tan),"Wallets, Cardholders & Pouches",AUDIT-NOOP,Audit suggested target equals current category (audit inconsistency); no change
