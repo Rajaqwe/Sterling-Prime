@@ -1,0 +1,51 @@
+Brand,Audit product count,Current repo count,Match,Audit verdict
+Portronics,430,430,YES,CREATE brand category — strong
+Salido,253,253,YES,CREATE brand category — strong
+Wonderchef,124,124,YES,CREATE brand category — strong
+Borosil,94,94,YES,CREATE brand category — strong
+Mona B,78,78,YES,CREATE brand category — strong
+Melamine,60,60,YES,CREATE brand category — strong
+Pebble,44,44,YES,CREATE brand category — good
+Noise,42,42,YES,CREATE brand category — good
+EkAttar,39,39,YES,CREATE brand category — good
+Fabelle,37,37,YES,CREATE brand category — good
+Remaxx,32,32,YES,CREATE brand category — good
+Lifelong,31,31,YES,CREATE brand category — good
+Adidas,25,25,YES,CREATE brand category — good
+boAt,24,24,YES,CREATE brand category — good
+JBL,24,24,YES,CREATE brand category — good
+Cross,24,24,YES,CREATE brand category — good
+Milton,22,22,YES,CREATE brand category — good
+Prestige,19,19,YES,CREATE brand category — good
+Carlton London,18,18,YES,CREATE brand category — good
+Ferrero Rocher,16,16,YES,CREATE brand category — good
+Bugatti,14,14,YES,CREATE if brand strategy justifies (meets 10-15 minimum)
+Lamy,14,14,YES,CREATE if brand strategy justifies (meets 10-15 minimum)
+Lenovo,12,12,YES,CREATE if brand strategy justifies (meets 10-15 minimum)
+Artis,9,9,YES,Do NOT create (below 10) — merge into generic categories
+myPAPERCLIP,7,7,YES,Do NOT create (below 10) — merge into generic categories
+Waterman,7,7,YES,Do NOT create (below 10) — merge into generic categories
+Snitch,6,6,YES,Do NOT create (below 10) — merge into generic categories
+Artiart,6,6,YES,Do NOT create (below 10) — merge into generic categories
+Qubo,5,5,YES,Do NOT create (below 10) — merge into generic categories
+Nope,5,5,YES,Do NOT create (below 10) — merge into generic categories
+Philips,5,5,YES,Do NOT create (below 10) — merge into generic categories
+Amazon,5,5,YES,Do NOT create (below 10) — merge into generic categories
+Xech,3,3,YES,Do NOT create (below 10) — merge into generic categories
+Reebok,3,3,YES,Do NOT create (below 10) — merge into generic categories
+Park Avenue,2,2,YES,Do NOT create (below 10) — merge into generic categories
+Madhu,2,2,YES,Do NOT create (below 10) — merge into generic categories
+Rare Rabbit,2,2,YES,Do NOT create (below 10) — merge into generic categories
+Monte Carlo,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Google,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Swiss Military,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Beardo,1,1,YES,Do NOT create (below 10) — merge into generic categories
+J. Hampstead,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Siyaram's,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Wacaco,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Yage,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Parker,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Sheaffer,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Acti Runn,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Vitality Hill,1,1,YES,Do NOT create (below 10) — merge into generic categories
+Mokobara,1,1,YES,Do NOT create (below 10) — merge into generic categories
